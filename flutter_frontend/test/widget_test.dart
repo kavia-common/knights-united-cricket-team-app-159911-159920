@@ -3,16 +3,25 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_frontend/main.dart';
 
 void main() {
-  testWidgets('App generation message displayed', (WidgetTester tester) async {
-    await tester.pumpWidget(const MyApp());
+  testWidgets('Home screen renders with bottom navigation and title', (WidgetTester tester) async {
+    await tester.pumpWidget(const KnightsUnitedApp());
+    await tester.pumpAndSettle();
 
-    expect(find.text('flutter_frontend App is being generated...'), findsOneWidget);
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.text('Knights United'), findsWidgets);
+    expect(find.byType(NavigationBar), findsOneWidget);
   });
 
-  testWidgets('App bar has correct title', (WidgetTester tester) async {
-    await tester.pumpWidget(const MyApp());
+  testWidgets('Switching tabs updates view', (WidgetTester tester) async {
+    await tester.pumpWidget(const KnightsUnitedApp());
+    await tester.pumpAndSettle();
 
-    expect(find.text('flutter_frontend'), findsOneWidget);
+    // Tap on Fixtures tab
+    final fixtures = find.text('Fixtures');
+    expect(fixtures, findsOneWidget);
+    await tester.tap(fixtures);
+    await tester.pumpAndSettle();
+
+    // AppBar title should update to "Match Center"
+    expect(find.text('Match Center'), findsOneWidget);
   });
 }
